@@ -1,6 +1,6 @@
 # GuideSeq-v2n: Guide-Seq Analysis Pipeline for Nanopore Reads
 
-A modified version of the Guide-Seq-2 (https://github.com/tsailabSJ/guideseq) pipeline that accomodates nanopore reads lacking UMIs.
+A modified version of the Guide-Seq-2 (https://github.com/tsailabSJ/guideseq) pipeline that accomodates nanopore reads (or other single-end reads) lacking UMIs.
 
 ## Table of Contents
 - [Pipeline](#pipeline)
@@ -53,14 +53,16 @@ In addition to end-to-end pipeline analysis functionality, the guideseq package 
 
 ### Installation<a name="Installation"></a>
 
-The most easiest way to install guideseq pipeline is via conda.
+The simplest way to install the guideseq-v2n pipeline is via conda.
 
 ```
-## BWA, bedtools, samtools are automatically installed
-conda create -n guideseq -c liyc1989 guide_seq
+## Create a conda environment with dependencies:
+conda create -n guideseq-v2n minimap2 bedtools samtools homer seqkit r-base r-essentials r-ggplot2 bioconda::bioconductor-bsgenome bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 
 
-## could also be conda activate guideseq
-source activate guideseq
+r-base=3.6.3 r-essentials 
+conda install -c conda-forge r-ggplot2
+conda install bioconda::bioconductor-bsgenome 
+conda install bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 
 
 conda install -c conda-forge -c bioconda cutadapt=3.4 bedtools=2.25.0
 
@@ -77,16 +79,7 @@ python guideseq/guideseq/guideseq.py -h
 
 ```
 
-### Install R 
 
-To make off-target manhattan plot, you need to install R and the following packages.
-
-```
-conda install -c conda-forge r-base=3.6.3 r-essentials 
-conda install -c conda-forge r-ggplot2
-conda install bioconda::bioconductor-bsgenome 
-conda install bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 
-```
 
 ### Quickstart <a name="Quickstart"></a>
 
