@@ -56,26 +56,15 @@ In addition to end-to-end pipeline analysis functionality, the guideseq package 
 The simplest way to install the guideseq-v2n pipeline is via conda.
 
 ```
-## Create a conda environment with dependencies:
-conda create -n guideseq-v2n minimap2 bedtools samtools homer seqkit r-base r-essentials r-ggplot2 bioconda::bioconductor-bsgenome bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 
+# Create a conda environment with dependencies:
+conda create -n guideseq-v2n minimap2 bedtools samtools biopython homer seqkit pandas pysam pyyaml tabulate r-base r-essentials r-ggplot2 bioconda::bioconductor-bsgenome bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 svgwrite
 
-r-base=3.6.3 r-essentials 
-conda install -c conda-forge r-ggplot2
-conda install bioconda::bioconductor-bsgenome 
-conda install bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 
+# Homer requires additional installation steps
+# Replace with your own conda environment path
+perl ~/.conda/envs/guideseq-v2n/share/homer/configureHomer.pl -install hg38
 
-conda install -c conda-forge -c bioconda cutadapt=3.4 bedtools=2.25.0
-
-pip install -r requirements.txt
-# homer installation can be difficult
-conda install -c bioconda homer==4.11
-# install hg38, replace with your own path
-perl ~/.conda/envs/guideseq/share/homer/.//configureHomer.pl -install hg38
-
-
-git clone https://github.com/tsailabSJ/guideseq.git
-
-python guideseq/guideseq/guideseq.py -h
+# Download guideseq-v2n code:
+git clone https://github.com/gagnonlab/guideseq-v2n.git
 
 ```
 
