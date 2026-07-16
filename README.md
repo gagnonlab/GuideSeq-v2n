@@ -57,7 +57,7 @@ The simplest way to install the guideseq-v2n pipeline is via conda.
 
 ```
 # Create a conda environment with dependencies:
-conda create -n guideseq-v2n minimap2 bedtools samtools biopython homer seqkit pandas pysam pyyaml tabulate r-base r-essentials r-ggplot2 bioconda::bioconductor-bsgenome bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 svgwrite
+conda create -n guideseq-v2n minimap2 bedtools samtools biopython homer seqkit pandas pyfaidx pysam pyyaml regex tabulate Levenshtein dill r-base r-essentials r-ggplot2 bioconda::bioconductor-bsgenome bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 svgwrite
 
 # Homer requires additional installation steps
 # Replace with your own conda environment path
