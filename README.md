@@ -9,7 +9,6 @@ A modified version of the Guide-Seq-2 (https://github.com/tsailabSJ/guideseq) pi
 - [Getting Set Up](#setup)
 	- [Installation](#Installation)
 - [Running the Full Analysis Pipeline](#full_pipeline)
-	- [Quickstart](#quickstart)
 	- [Writing A Manifest File](#write_manifest)
 	- [A Full Manifest File Example](manifest_example)
 	- [Pipeline Outputs](#pipeline_output)
@@ -34,7 +33,7 @@ The individual pipeline steps are:
 
 5. **Tablization**: Results of individual samples are combined into a single tab-seperated-value (TSV) table for ease of comparison.
 
-### Running Pipeline Steps Individuallye<a name="steps"></a>
+### Running Pipeline Steps Individually<a name="steps"></a>
 
 In addition to end-to-end pipeline analysis functionality, the guideseq package also allows for every step of the analysis to be run individually. There are 5 steps: `filter`, `align`, `identify`, `visualize`, and 'tablize', specified using `--step filter+align+identify+visualize+tablize`. You can run individual steps just by giving the single step name, or a combination of steps, using `+` to connect them. What you can't do is to skip a step, for example skipping the alignment step, e.g. `filter+identify`, will cause an error. This can be useful for troubleshooting failed steps.
 
@@ -57,82 +56,39 @@ The simplest way to install the guideseq-v2n pipeline is via conda.
 
 ```
 # Create a conda environment with dependencies:
-conda create -n guideseq-v2n minimap2 bedtools samtools biopython homer seqkit pandas pyfaidx pysam pyyaml regex tabulate Levenshtein dill r-base r-essentials r-ggplot2 bioconda::bioconductor-bsgenome bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 svgwrite
+conda create -n guideseq-v2n minimap2 bedtools samtools biopython homer seqkit pandas \
+	pyfaidx pysam pyyaml regex tabulate Levenshtein dill r-base r-essentials r-ggplot2 \
+	bioconda::bioconductor-bsgenome bioconda::bioconductor-bsgenome.hsapiens.ucsc.hg38 svgwrite
 
 # Homer requires additional installation steps
 # Replace with your own conda environment path
 perl ~/.conda/envs/guideseq-v2n/share/homer/configureHomer.pl -install hg38
 
 # Download guideseq-v2n code:
-git clone https://github.com/gagnonlab/guideseq-v2n.git
-
+git clone https://github.com/gagnonlab/GuideSeq-v2n/
 ```
-
-
 
 ### Quickstart <a name="Quickstart"></a>
 
 ```
-
-git clone https://github.com/tsailabSJ/guideseq
-
+TO FIX
 cd guideseq/test
 
 python ../guideseq/guideseq.py main -m test_manifest.yaml
-
 ```
 
-If you are using an HPC with LSF job system, you can parallelize the guide-seq analysis by `guideseq.py parallel -m test_manifest.yaml`
 
 ## Running the Full Analysis Pipeline<a name="full_pipeline"></a>
 
-### Quickstart<a name="quickstart"></a>
-
-To run the full guideseq analysis pipeline, you must first create a manifest YAML file that describes all pipeline inputs. Once you have done so, you can simply run
-
-```
-guideseq main -m /path/to/manifest.yaml
-```
-
-to run the entire pipeline. Below are specific instructions detailing how to write the manifest file.
-
 ### Writing A Manifest File<a name="write_manifest"></a>
-When running the end-to-end analysis functionality of the guideseq package, a number of inputs are required. To simplify the formatting of these inputs and to encourage reproducibility, these parameters are inputted into the pipeline via a manifest formatted as a YAML file. YAML files allow easy-to-read specification of key-value pairs. This allows us to easily specify our parameters. The following fields are required in the manifest:
+When running the end-to-end analysis functionality of the GuideSeq_v2n pipeline, a number of inputs are required. To simplify the formatting of these inputs and to encourage reproducibility, these parameters are input into the pipeline via a manifest formatted as a YAML file. Any values not set in in the YAML file will use standard, default values. The following fields are required in the manifest:
 
-- `reference_genome`: The absolute path to the reference genome FASTA file.
-- `blacklist`: The absolute or relative path to the blacklist file (optional).
-- `genome`: hg19 or hg38 for homer off-target annotation.
-- `analysis_folder`: The absolute or relative path to the folder in which all pipeline outputs will be saved.
-- `bwa`: The absolute path to the `bwa` executable
-- `bedtools`: The absolute path to the `bedtools` executable
-- `PAM`: PAM sequence (optional), default is NGG.
-- `demultiplex`: The absolute paths to the undemultiplexed paired end sequencing files. The required parameters are:
-	- `forward`: The absolute path to the FASTQ file containing the forward reads.
-	- `reverse`: The absolute path to the FASTQ file containing the reverse reads.
-	- `index1`: The absolute path to the FASTQ file containing the forward index reads.
-	- `index2`: The absolute path to the FASTQ file containing the reverse index reads.
-
-An example `undemultiplexed` field:
-
-```
-demultiplex:
-    min_reads: 10000
-    mismatch: 1
-    forward: test_fastq_R1_001.fastq
-    reverse: test_fastq_R2_001.fastq
-    index1: test_fastq_I1_001.fastq
-    index2: test_fastq_I2_001.fastq
-    out_dir: demultiplexed # relative to analysis_folder
-    input_dir: ./ # relative to analysis_folder
-```
-
+- `reference_genome`: The path to the reference genome FASTA file.
+- `analysis_folder`: The path to the folder in which all pipeline outputs will be saved.
 - `samples`: A nested field containing the details of each sample. At least two samples must be specified: a "control" sample (to be used to filter out background off-target sites) and at least one treatment sample. The required parameters are:
-	- `target`: The sample targetsites
-	- `barcode1`: The forward barcode
-	- `barcode2`: The reverse barcode
-	- `controlbarcode1`: The forward controlbarcode1
-	- `controlbarcode2`: The reverse controlbarcode2
-	- `description`: A description of the sample
+	- `target`: The sample target. Should include the PAM.
+	- `read`: The location of the sample fastq file.
+	- `description`: A description of the sample.
 
 An example `samples` field:
 
@@ -140,11 +96,8 @@ An example `samples` field:
 samples:
     test:
         target: GGGGCCACTAGGGACAGGATNGG
-        barcode1: CCTGAGGA
-        barcode2: GTAAGGAG
-        controlbarcode1: GGGGGGGG
-        controlbarcode2: CGGCGACC
-        description:  test_description
+        read: barcode_01.fastq
+        description: test_description
 ```
 
 ### A Full Manifest File Example<a name="manifest_example"></a>
