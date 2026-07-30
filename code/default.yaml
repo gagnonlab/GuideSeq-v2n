@@ -1,0 +1,82 @@
+reference_genome: /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/genomes/hg38/hg38_chroms_only.fa
+blacklist: /research_jude/rgs01_jude/groups/tsaigrp/projects/Genomics/common/genomes/hg38/hg38-blacklist.v2.bed.gz
+genome: hg38
+# if not specified, default is NGG
+PAM: NGG
+
+# output folder directory (absolute or relative path), if not specified, default is current dir
+# analysis_folder: /rgs01/project_space/tsaigrp/Genomics/common/projects/CHANGE_seq/CHANGE_seq_05022021/test/
+
+
+# PATH to analysis tools
+# If not specified, default is just the tool name, i.e., accessible in the $PATH
+minimap2: minimap2
+samtools: samtools
+bedtools: bedtools
+seqkit: seqkit
+Rscript: Rscript
+
+# guideseq
+window_size: 25
+max_score: 7
+on_target_reference_sequence: GTCCCTAGTGGCCCCACTGTAGG
+save_pickle: True
+
+# consolidation
+CONSOLIDATE_MIN_QUAL: 15
+CONSOLIDATE_MIN_FREQ: 0.9
+
+# read filter
+mapq_threshold: 50
+
+
+# dsODN_primer
+i7+: ATACCGTTATTAACATATGACA
+i7-: GTTTAATTGAGTTGTCATATGTTAATAAC
+dsODN_primer: GTTTAATTGAGTTGTCATATGTTAATAACGGTAT # primer sequence that matches dsODN in one direction
+dsODN_primer_revcomp: ATACCGTTATTAACATATGACAACTCAATTAAAC # primer sequence that matches dsODN in other direction
+control_primer_coord: chr2:99357763-99357801
+control_primer: AGATGCCTTTGGGGATACTCC
+
+# RAPID_transposase
+RAPIDall: TTTCGcgtttttcgtgcgccgcttca
+RAPIDprimer: TTTATCGTGAAACGCTTTCG
+
+# primer sequence matching
+# example, <= match_distance is a match
+# >= mispriming_distance is a mispriming
+# all distance here is edit distance
+i7+_match_distance: 2
+i7-_match_distance: 3
+control_primer_match_distance: 2
+i7+_mispriming_distance: 3
+i7-_mispriming_distance: 2
+i7+_mispriming_length: 12
+i7-_mispriming_length: 5
+
+
+# out_dir, input_dir are relative path to analysis_folder
+
+# DEMULTIPLEX 
+# ------------
+demultiplex:
+    min_reads: 10000
+    mismatch: 1
+    forward: Undetermined_S0_R1_001.fastq.gz
+    reverse: Undetermined_S0_R2_001.fastq.gz
+    index1: Undetermined_S0_I1_001.fastq.gz
+    index2: Undetermined_S0_I2_001.fastq.gz
+    out_dir: demultiplexed # relative to analysis_folder
+    input_dir: ./ # relative to analysis_folder
+    subsample_reads: -1
+
+samples:
+    AAVS1_site_2_d30_rep1:
+        target: GTCCCTAGTGGCCCCACTGTNGG
+        barcode1: ATTCCGCT
+        barcode2: TAGATCGC
+        controlbarcode1: ATTCCGCT
+        controlbarcode2: AAGGAGTA
+        description:  AAVS1_site_2_d30_rep1
+
+
